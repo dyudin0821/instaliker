@@ -1,0 +1,2 @@
+instapy==0.6.13
+schedule==1.1.0
