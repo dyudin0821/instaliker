@@ -8,15 +8,15 @@ RUN sed -i "s#deb http://deb.debian.org/debian buster main#deb http://deb.debian
   && apt-get update \
   && apt-get install -y --no-install-recommends --no-install-suggests \
   # Firefox dependencies
-  libgtk-3-0 libdbus-glib-1-2 libx11-xcb1 libxt6 \
+  libgtk-3-0 libdbus-glib-1-2 libx11-xcb1 libxt6 firefox-esr \
   # Firefox downlader dependencies
   bzip2 \
   wget \
   gcc \
   g++ \
-  # Install newesst Firefox
-  && wget -q -O - "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64" | tar -xj -C /opt \
-  && ln -s /opt/firefox/firefox /usr/bin/ \
+  && wget -q https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-arm7hf.tar.gz -O /tmp/geckodriver-v0.23.0-arm7hf.tar.gz \
+  && tar -xvzf /tmp/geckodriver-v0.23.0-arm7hf.tar.gz -C /usr/local/bin/ \
+  && chmod +x /usr/local/bin/geckodriver \
   && pip install --no-cache-dir -U -r /app/requirements.txt \
   && apt-get purge -y --auto-remove \
   gcc \
@@ -30,5 +30,7 @@ RUN sed -i "s#deb http://deb.debian.org/debian buster main#deb http://deb.debian
   && sed -i "s#bitness in name]#bitness in name and name[-3:] != 'asc' ]#g" /usr/local/lib/python3.9/site-packages/webdriverdownloader/webdriverdownloader.py
 
 COPY bot.py /app/bot.py
+
+ENV PATH /usr/local/bin:$PATH
 
 CMD ["python", "bot.py"]

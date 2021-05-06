@@ -1,0 +1,12 @@
+[Unit]
+Description=Instagram Bot
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/instaliker/bot.py
+EnvironmentFile=/opt/instaliker/.env
+Restart=on-failure
+Type=simple
+TimeoutSec=600
+
+[Install]
+WantedBy=default.target
